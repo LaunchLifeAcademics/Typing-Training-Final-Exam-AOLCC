@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Proficiency Assessment</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 32px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .header h1 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .official-badge {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        /* Registration Screen */
+        .registration {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .registration h2 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .registration p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1e3a5f;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d5a87;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Previous Attempts Warning */
+        .attempts-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .attempts-notice h4 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .attempts-notice p {
+            color: #856404;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Assessment Screen */
+        .assessment {
+            display: none;
+        }
+
+        .student-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .student-info span {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .student-info strong {
+            color: #1e3a5f;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a5f, #2d5a87);
+            border-radius: 4px;
+            transition: width 0.2s;
+        }
+
+        .text-display {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 24px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 1.4rem;
+            line-height: 2.2;
+            margin-bottom: 20px;
+            min-height: 150px;
+            color: #666;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 300px;
+            letter-spacing: 0.5px;
+        }
+
+        .text-display .char {
+            transition: color 0.1s;
+            display: inline;
+        }
+
+        .text-display .char.correct {
+            color: #22ff22;
+            text-shadow: 0 0 2px rgba(34, 255, 34, 0.3);
+        }
+
+        .text-display .char.incorrect {
+            color: #ff4444;
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            font-weight: bold;
+        }
+
+        .text-display .char.current {
+            background: #ffd700;
+            color: #000 !important;
+            border-radius: 3px;
+            padding: 2px 1px;
+            margin: 0 1px;
+            font-weight: bold;
+            box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.6);
+            animation: pulse-cursor 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-cursor {
+            0%, 100% { 
+                box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.6);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.9);
+                transform: scale(1.1);
+            }
+        }
+
+        .text-display .char.pending {
+            color: #aaa;
+        }
+
+        .typing-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .typing-input:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.2);
+        }
+
+        .typing-input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .typing-input.error {
+            border-color: #f87171;
+            box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
+        }
+
+        .warning-text {
+            text-align: center;
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        /* Results Screen */
+        .results {
+            display: none;
+        }
+
+        .certificate {
+            border: 3px solid #1e3a5f;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            margin-bottom: 24px;
+        }
+
+        .certificate-header {
+            margin-bottom: 24px;
+        }
+
+        .certificate-logo {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+
+        .certificate h2 {
+            color: #1e3a5f;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .certificate h3 {
+            color: #666;
+            font-weight: normal;
+            font-size: 1rem;
+        }
+
+        .certificate-body {
+            margin: 24px 0;
+        }
+
+        .certificate .student-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 16px;
+        }
+
+        .certificate .result-summary {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-item .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        .score-item .label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .pass-status {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 16px 0;
+        }
+
+        .pass-status.passed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .pass-status.needs-improvement {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .certificate-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .certificate-footer .timestamp {
+            font-family: monospace;
+        }
+
+        /* Attempt History */
+        .attempt-history {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .attempt-history h4 {
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .attempt-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .attempt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .attempt-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .attempt-item.current {
+            border: 2px solid #1e3a5f;
+        }
+
+        .attempt-item.incomplete {
+            background: #fee;
+            border: 1px solid #fcc;
+        }
+
+        .attempt-item .attempt-num {
+            font-weight: 600;
+            color: #1e3a5f;
+        }
+
+        .attempt-item .attempt-stats {
+            color: #555;
+        }
+
+        .attempt-item .attempt-time {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .action-buttons, .warning-text {
+                display: none;
+            }
+
+            .certificate {
+                border-width: 2px;
+            }
+
+            .attempt-history {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .text-display {
+                font-size: 1rem;
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 1.4rem;
+            }
+
+            .score-display {
+                gap: 20px;
+            }
+
+            .score-item .value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="official-badge">Official Assessment</div>
+            <h1>⌨️ Typing Proficiency Assessment</h1>
+            <p class="subtitle">Demonstrate your typing speed and accuracy</p>
+        </div>
+
+        <!-- Registration Screen -->
+        <div class="registration" id="registrationScreen">
+            <h2>Welcome</h2>
+            <p>Please enter your information to begin the assessment.</p>
+
+            <div id="attemptsNotice" class="attempts-notice" style="display: none;">
+                <h4>📋 Previous Attempts Detected</h4>
+                <p>You have taken this assessment <span id="prevAttemptCount">0</span> time(s) before. All attempts are recorded.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="studentName">Full Name</label>
+                <input type="text" id="studentName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="studentId">Student ID (optional)</label>
+                <input type="text" id="studentId" placeholder="Enter your student ID">
+            </div>
+
+            <button class="btn btn-primary" id="startBtn">Begin Assessment</button>
+
+            <div style="margin-top: 24px; padding: 16px; background: #e8f4fd; border-radius: 8px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <strong style="color: #1e3a5f;">Assessment Guidelines:</strong>
+                <ul style="margin-top: 8px; margin-left: 20px; color: #555; font-size: 0.9rem;">
+                    <li>Type the displayed text as quickly and accurately as possible</li>
+                    <li>The timer starts when you begin typing</li>
+                    <li>All attempts are recorded and timestamped</li>
+                    <li>Refreshing mid-test will be logged as incomplete</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Assessment Screen -->
+        <div class="assessment" id="assessmentScreen">
+            <div class="student-info">
+                <span>Student: <strong id="displayName"></strong></span>
+                <span>Attempt: <strong id="attemptNumber">1</strong></span>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value" id="wpm">0</div>
+                    <div class="stat-label">WPM</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="accuracy">100%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="errors">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="time">0:00</div>
+                    <div class="stat-label">Time</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="fill" id="progress" style="width: 0%"></div>
+            </div>
+
+            <div class="text-display" id="textDisplay"></div>
+
+            <input 
+                type="text" 
+                id="typingInput" 
+                class="typing-input" 
+                placeholder="Click here and start typing..."
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+            >
+
+            <p class="warning-text">⚠️ Do not refresh the page. All attempts are recorded.</p>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results" id="resultsScreen">
+            <div class="certificate">
+                <div class="certificate-header">
+                    <div class="certificate-logo">🏆</div>
+                    <h2>Typing Proficiency Assessment</h2>
+                    <h3>Certificate of Completion</h3>
+                </div>
+
+                <div class="certificate-body">
+                    <div class="student-name" id="certName"></div>
+                    <div id="certStudentId" style="color: #666; margin-bottom: 16px;"></div>
+
+                    <div class="score-display">
+                        <div class="score-item">
+                            <div class="value" id="certWpm">0</div>
+                            <div class="label">Words Per Minute</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="value" id="certAccuracy">0%</div>
+                            <div class="label">Accuracy</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="value" id="certTime">0:00</div>
+                            <div class="label">Completion Time</div>
+                        </div>
+                    </div>
+
+                    <div class="pass-status" id="passStatus">Assessment Complete</div>
+                </div>
+
+                <div class="certificate-footer">
+                    <div>Assessment completed on <span class="timestamp" id="certTimestamp"></span></div>
+                    <div style="margin-top: 4px;">Attempt #<span id="certAttemptNum">1</span></div>
+                </div>
+            </div>
+
+            <div class="attempt-history">
+                <h4>📊 Complete Attempt History</h4>
+                <div class="attempt-list" id="attemptList"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="printBtn">🖨️ Print Certificate</button>
+                <button class="btn btn-secondary" id="retakeBtn">Take Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        
+        const CONFIG = {
+            passingWpm: 35,  // Minimum WPM to "pass"
+            storageKey: 'typingAssessment_v1'
+        };
+
+        // Standardized assessment texts (all similar difficulty/length)
+        const ASSESSMENT_TEXTS = [
+            "Effective communication in the modern workplace requires strong typing skills. Professionals who can type quickly and accurately are able to respond to emails, create reports, and collaborate with colleagues more efficiently. This skill becomes increasingly valuable as more business operations move to digital platforms. Regular practice and proper technique will help you improve your speed while maintaining high accuracy standards.",
+            
+            "The ability to type proficiently has become an essential skill in today's technology-driven workplace. Whether you are writing emails, creating documents, or entering data, fast and accurate typing saves valuable time. Many employers now consider typing speed an important qualification for office positions. By developing this fundamental skill, you open doors to greater productivity and career advancement opportunities.",
+            
+            "Professional success in the digital age depends heavily on strong keyboard skills. Workers who type efficiently can complete tasks faster and focus more attention on the quality of their work. Good typing habits include proper posture, correct finger placement, and consistent practice. As you develop these skills, you will notice improvements in both your speed and accuracy, making you a more effective professional.",
+            
+            "In modern offices, typing proficiency directly impacts productivity and job performance. Employees who can type quickly spend less time on routine tasks and more time on meaningful work. Developing strong typing skills requires patience and regular practice, but the benefits are substantial. Accurate typing also reduces errors and the time spent making corrections, leading to higher quality work overall."
+        ];
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+
+        let state = {
+            studentName: '',
+            studentId: '',
+            currentText: '',
+            currentIndex: 0,
+            errors: 0,
+            totalKeystrokes: 0,
+            startTime: null,
+            timerInterval: null,
+            isComplete: false,
+            attemptInProgress: false,
+            attempts: []
+        };
+
+        // ============================================
+        // LOCAL STORAGE
+        // ============================================
+
+        function loadAttempts() {
+            try {
+                const stored = localStorage.getItem(CONFIG.storageKey);
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error loading attempts:', e);
+            }
+            return [];
+        }
+
+        function saveAttempts(attempts) {
+            try {
+                localStorage.setItem(CONFIG.storageKey, JSON.stringify(attempts));
+            } catch (e) {
+                console.error('Error saving attempts:', e);
+            }
+        }
+
+        function addAttempt(attempt) {
+            const attempts = loadAttempts();
+            attempts.push(attempt);
+            saveAttempts(attempts);
+            return attempts;
+        }
+
+        function markAttemptComplete(attemptIndex, results) {
+            const attempts = loadAttempts();
+            if (attempts[attemptIndex]) {
+                attempts[attemptIndex] = { ...attempts[attemptIndex], ...results };
+                saveAttempts(attempts);
+            }
+            return attempts;
+        }
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+
+        const elements = {
+            // Screens
+            registrationScreen: document.getElementById('registrationScreen'),
+            assessmentScreen: document.getElementById('assessmentScreen'),
+            resultsScreen: document.getElementById('resultsScreen'),
+            
+            // Registration
+            studentName: document.getElementById('studentName'),
+            studentId: document.getElementById('studentId'),
+            startBtn: document.getElementById('startBtn'),
+            attemptsNotice: document.getElementById('attemptsNotice'),
+            prevAttemptCount: document.getElementById('prevAttemptCount'),
+            
+            // Assessment
+            displayName: document.getElementById('displayName'),
+            attemptNumber: document.getElementById('attemptNumber'),
+            textDisplay: document.getElementById('textDisplay'),
+            typingInput: document.getElementById('typingInput'),
+            wpm: document.getElementById('wpm'),
+            accuracy: document.getElementById('accuracy'),
+            errors: document.getElementById('errors'),
+            time: document.getElementById('time'),
+            progress: document.getElementById('progress'),
+            
+            // Results
+            certName: document.getElementById('certName'),
+            certStudentId: document.getElementById('certStudentId'),
+            certWpm: document.getElementById('certWpm'),
+            certAccuracy: document.getElementById('certAccuracy'),
+            certTime: document.getElementById('certTime'),
+            certTimestamp: document.getElementById('certTimestamp'),
+            certAttemptNum: document.getElementById('certAttemptNum'),
+            passStatus: document.getElementById('passStatus'),
+            attemptList: document.getElementById('attemptList'),
+            printBtn: document.getElementById('printBtn'),
+            retakeBtn: document.getElementById('retakeBtn')
+        };
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        function init() {
+            // Check for previous attempts
+            const attempts = loadAttempts();
+            if (attempts.length > 0) {
+                elements.attemptsNotice.style.display = 'block';
+                elements.prevAttemptCount.textContent = attempts.length;
+                
+                // Pre-fill name if available
+                const lastAttempt = attempts[attempts.length - 1];
+                if (lastAttempt.studentName) {
+                    elements.studentName.value = lastAttempt.studentName;
+                }
+                if (lastAttempt.studentId) {
+                    elements.studentId.value = lastAttempt.studentId;
+                }
+            }
+
+            // Check for incomplete attempt (page was refreshed)
+            const lastAttempt = attempts[attempts.length - 1];
+            if (lastAttempt && lastAttempt.status === 'in_progress') {
+                // Mark as incomplete
+                markAttemptComplete(attempts.length - 1, {
+                    status: 'incomplete',
+                    endTime: new Date().toISOString(),
+                    wpm: 0,
+                    accuracy: 0,
+                    note: 'Page refreshed during assessment'
+                });
+            }
+
+            // Event listeners
+            elements.startBtn.addEventListener('click', startAssessment);
+            elements.typingInput.addEventListener('input', handleInput);
+            elements.typingInput.addEventListener('paste', (e) => e.preventDefault());
+            elements.printBtn.addEventListener('click', () => window.print());
+            elements.retakeBtn.addEventListener('click', resetForRetake);
+
+            // Warn before leaving
+            window.addEventListener('beforeunload', (e) => {
+                if (state.attemptInProgress && !state.isComplete) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        }
+
+        // ============================================
+        // ASSESSMENT FUNCTIONS
+        // ============================================
+
+        function startAssessment() {
+            const name = elements.studentName.value.trim();
+            if (!name) {
+                alert('Please enter your name to begin.');
+                elements.studentName.focus();
+                return;
+            }
+
+            state.studentName = name;
+            state.studentId = elements.studentId.value.trim();
+            
+            // Select random text
+            state.currentText = ASSESSMENT_TEXTS[Math.floor(Math.random() * ASSESSMENT_TEXTS.length)];
+            
+            // Get attempt number
+            const attempts = loadAttempts();
+            const attemptNum = attempts.length + 1;
+            
+            // Record attempt start
+            addAttempt({
+                attemptNumber: attemptNum,
+                studentName: state.studentName,
+                studentId: state.studentId,
+                startTime: new Date().toISOString(),
+                status: 'in_progress'
+            });
+
+            state.attemptInProgress = true;
+            state.attempts = loadAttempts();
+
+            // Update UI
+            elements.displayName.textContent = state.studentName;
+            elements.attemptNumber.textContent = attemptNum;
+            
+            // Show assessment screen
+            elements.registrationScreen.style.display = 'none';
+            elements.assessmentScreen.style.display = 'block';
+            
+            initializeText();
+            elements.typingInput.focus();
+        }
+
+        // Store character spans for efficient updates
+        let charSpans = [];
+        let lastRenderedIndex = -1;
+
+        function initializeText() {
+            // Build the text display once
+            elements.textDisplay.innerHTML = state.currentText.split('').map((char, index) => {
+                return `<span class="char pending" data-index="${index}">${char}</span>`;
+            }).join('');
+            // Cache all spans
+            charSpans = elements.textDisplay.querySelectorAll('.char');
+            // Mark first character as current
+            if (charSpans.length > 0) {
+                charSpans[0].classList.add('current');
+            }
+            lastRenderedIndex = 0;
+        }
+
+        function renderText() {
+            const typed = elements.typingInput.value;
+            
+            // Only update what's changed since last render
+            // Update previous position (now typed)
+            if (lastRenderedIndex >= 0 && lastRenderedIndex < charSpans.length && state.currentIndex > lastRenderedIndex) {
+                const prevSpan = charSpans[lastRenderedIndex];
+                const expectedChar = state.currentText[lastRenderedIndex];
+                prevSpan.classList.remove('current', 'pending');
+                prevSpan.classList.add(typed[lastRenderedIndex] === expectedChar ? 'correct' : 'incorrect');
+            }
+            
+            // Update current position
+            if (state.currentIndex < charSpans.length) {
+                const currSpan = charSpans[state.currentIndex];
+                currSpan.classList.remove('correct', 'incorrect');
+                currSpan.classList.add('current', 'pending');
+                
+                // Auto-scroll to keep current character visible
+                const container = elements.textDisplay;
+                const spanRect = currSpan.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                
+                // If current character is below visible area, scroll down
+                if (spanRect.bottom > containerRect.bottom - 20) {
+                    currSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                // If current character is above visible area (backspace), scroll up
+                else if (spanRect.top < containerRect.top + 20) {
+                    currSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            // Handle backspace case
+            if (state.currentIndex < lastRenderedIndex && state.currentIndex < charSpans.length) {
+                const currSpan = charSpans[state.currentIndex];
+                currSpan.classList.remove('correct', 'incorrect');
+                currSpan.classList.add('current', 'pending');
+                
+                // Reset characters after current position
+                for (let i = state.currentIndex + 1; i <= lastRenderedIndex && i < charSpans.length; i++) {
+                    charSpans[i].classList.remove('correct', 'incorrect', 'current');
+                    charSpans[i].classList.add('pending');
+                }
+            }
+            
+            lastRenderedIndex = state.currentIndex;
+        }
+
+        function updateStats() {
+            if (!state.startTime) return;
+
+            const elapsedTime = (Date.now() - state.startTime) / 1000;
+            const minutes = elapsedTime / 60;
+            
+            const wordsTyped = state.currentIndex / 5;
+            const wpm = minutes > 0 ? Math.round(wordsTyped / minutes) : 0;
+            
+            const accuracy = state.totalKeystrokes > 0 
+                ? Math.round(((state.totalKeystrokes - state.errors) / state.totalKeystrokes) * 100) 
+                : 100;
+
+            elements.wpm.textContent = wpm;
+            elements.accuracy.textContent = accuracy + '%';
+            elements.errors.textContent = state.errors;
+            
+            const progress = (state.currentIndex / state.currentText.length) * 100;
+            elements.progress.style.width = progress + '%';
+        }
+
+        function updateTimer() {
+            if (!state.startTime) return;
+            
+            const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            elements.time.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function handleInput() {
+            if (state.isComplete) return;
+
+            const typed = elements.typingInput.value;
+            
+            // Start timer on first keystroke
+            if (!state.startTime && typed.length > 0) {
+                state.startTime = Date.now();
+                state.timerInterval = setInterval(updateTimer, 1000);
+            }
+
+            const newIndex = typed.length;
+            
+            if (newIndex > state.currentIndex) {
+                state.totalKeystrokes++;
+                const typedChar = typed[newIndex - 1];
+                const expectedChar = state.currentText[newIndex - 1];
+                
+                if (typedChar !== expectedChar) {
+                    state.errors++;
+                    elements.typingInput.classList.add('error');
+                    setTimeout(() => elements.typingInput.classList.remove('error'), 150);
+                }
+            }
+
+            state.currentIndex = newIndex;
+            renderText();
+            updateStats();
+
+            // Check completion
+            if (state.currentIndex >= state.currentText.length) {
+                completeAssessment();
+            }
+        }
+
+        function completeAssessment() {
+            state.isComplete = true;
+            state.attemptInProgress = false;
+            clearInterval(state.timerInterval);
+            elements.typingInput.disabled = true;
+
+            const elapsedTime = (Date.now() - state.startTime) / 1000;
+            const minutes = elapsedTime / 60;
+            const wordsTyped = state.currentText.length / 5;
+            const finalWpm = Math.round(wordsTyped / minutes);
+            const finalAccuracy = state.totalKeystrokes > 0 
+                ? Math.round(((state.totalKeystrokes - state.errors) / state.totalKeystrokes) * 100) 
+                : 100;
+            const finalTime = elements.time.textContent;
+
+            // Update stored attempt
+            const attempts = loadAttempts();
+            const currentAttemptIndex = attempts.length - 1;
+            const updatedAttempts = markAttemptComplete(currentAttemptIndex, {
+                status: 'complete',
+                endTime: new Date().toISOString(),
+                wpm: finalWpm,
+                accuracy: finalAccuracy,
+                time: finalTime,
+                errors: state.errors
+            });
+
+            // Show results
+            showResults(finalWpm, finalAccuracy, finalTime, updatedAttempts);
+        }
+
+        function showResults(wpm, accuracy, time, attempts) {
+            elements.assessmentScreen.style.display = 'none';
+            elements.resultsScreen.style.display = 'block';
+
+            // Certificate info
+            elements.certName.textContent = state.studentName;
+            elements.certStudentId.textContent = state.studentId ? `Student ID: ${state.studentId}` : '';
+            elements.certWpm.textContent = wpm;
+            elements.certAccuracy.textContent = accuracy + '%';
+            elements.certTime.textContent = time;
+            elements.certTimestamp.textContent = new Date().toLocaleString();
+            elements.certAttemptNum.textContent = attempts.length;
+
+            // Pass/fail status
+            if (wpm >= CONFIG.passingWpm && accuracy >= 90) {
+                elements.passStatus.textContent = '✓ Proficiency Demonstrated';
+                elements.passStatus.className = 'pass-status passed';
+            } else {
+                elements.passStatus.textContent = 'Needs Improvement';
+                elements.passStatus.className = 'pass-status needs-improvement';
+            }
+
+            // Render attempt history
+            renderAttemptHistory(attempts);
+        }
+
+        function renderAttemptHistory(attempts) {
+            elements.attemptList.innerHTML = attempts.map((attempt, index) => {
+                const isCurrentAttempt = index === attempts.length - 1;
+                const isIncomplete = attempt.status === 'incomplete';
+                
+                let statsText = '';
+                if (isIncomplete) {
+                    statsText = '<span style="color: #dc3545;">Incomplete (page refreshed)</span>';
+                } else if (attempt.status === 'complete') {
+                    statsText = `${attempt.wpm} WPM | ${attempt.accuracy}% accuracy`;
+                } else {
+                    statsText = 'In progress...';
+                }
+
+                const date = new Date(attempt.startTime);
+                const timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                return `
+                    <div class="attempt-item ${isCurrentAttempt ? 'current' : ''} ${isIncomplete ? 'incomplete' : ''}">
+                        <span class="attempt-num">Attempt #${attempt.attemptNumber}</span>
+                        <span class="attempt-stats">${statsText}</span>
+                        <span class="attempt-time">${timeStr}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function resetForRetake() {
+            // Reset state
+            state.currentText = '';
+            state.currentIndex = 0;
+            state.errors = 0;
+            state.totalKeystrokes = 0;
+            state.startTime = null;
+            state.isComplete = false;
+            state.attemptInProgress = false;
+            charSpans = [];
+            lastRenderedIndex = -1;
+
+            clearInterval(state.timerInterval);
+
+            // Reset UI
+            elements.typingInput.value = '';
+            elements.typingInput.disabled = false;
+            elements.wpm.textContent = '0';
+            elements.accuracy.textContent = '100%';
+            elements.errors.textContent = '0';
+            elements.time.textContent = '0:00';
+            elements.progress.style.width = '0%';
+
+            // Update attempts notice
+            const attempts = loadAttempts();
+            elements.prevAttemptCount.textContent = attempts.length;
+            elements.attemptsNotice.style.display = 'block';
+
+            // Show registration
+            elements.resultsScreen.style.display = 'none';
+            elements.registrationScreen.style.display = 'block';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
